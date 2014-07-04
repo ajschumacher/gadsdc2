@@ -1,3 +1,3 @@
-You can add your `00-preliminaries` work in a subdirectory of this one.
-Name your subdirectory after yourself, like `aaron`, for example. Do this
-in your own fork of this repo, and then submit a pull request.
+### gadsdc
+
+Repository to collect (some but not all) student work for General Assembly's Data Science course in DC. To contain many great things!

@@ -1,1 +1,1 @@
-this a link to my twitter account: https://twitter.com/vel_lee  and here is a link to my blog: https://www.blogger.com/blogger.g?blogID=2519351692669760885#overview/src=dashboard
+this a link to my twitter account: https://twitter.com/vel_lee  and here is a link to my blog: http://veleecious.blogspot.com

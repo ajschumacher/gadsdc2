@@ -1,8 +1,4 @@
-#Daniel Chung's assignment for class 2
+#Daniel Chung
 
-###Twitter:
-	https://twitter.com/DannySChung
-
-###Blog:
-	http://dataanalystintraining.wordpress.com/
+You can find me on twitter [@DannySChung](https://twitter.com/DannySChung) or read my [blog](http://dataanalystintraining.wordpress.com/)!
 

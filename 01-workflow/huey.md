@@ -1,2 +1,2 @@
 twitter -- @hueeey
-blog -- hueyqt.wordpress.com
+blog url -- hueyqt.wordpress.com

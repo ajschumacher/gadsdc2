@@ -1,2 +1,2 @@
-twitter handle -- @hueeey
-blog url -- hueyqt.wordpress.com
+twitter -- @hueeey
+blog -- hueyqt.wordpress.com

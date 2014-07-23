@@ -1,1 +1,7 @@
-Just a test file for now
+Thomas Gilmore info:
+
+twitter:	twitter.com/tg1lmore
+
+blog:		http://ethomasg.wordpress.com/
+
+

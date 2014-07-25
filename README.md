@@ -4,10 +4,10 @@ Repository to collect (some but not all) student work for General Assembly's Dat
 
 #### Initial setup
 
- 1. Fork the [main gadsdc2 repo](https://github.com/ajschumacher/gadsdc2) on GitHub
- 2. `git clone URL_of_your_fork`: copy your fork to your local computer (and automatically add URL_of_your_fork as the remote origin)
+ 1. Fork the [primary gadsdc2 repo](https://github.com/ajschumacher/gadsdc2) on GitHub
+ 2. `git clone URL_of_your_fork`: copy your fork to your local computer (automatically defines your fork as the remote origin)
  3. `cd gadsdc2`: change into the gadsdc2 subdirectory that was just created
- 4. `git remote add upstream URL_of_main_gadsdc2_repo`: add URL_of_main_gadsdc2_repo as the remote upstream
+ 4. `git remote add upstream URL_of_main_repo`: define the primary gadsdc2 repo as the remote upstream
 
 #### Recipe for submitting assignments
 

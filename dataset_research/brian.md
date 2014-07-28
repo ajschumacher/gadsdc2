@@ -1,11 +1,8 @@
 Infochimps UFO Dataset
 =========
+UFO data across more than 60,000 accounts of UFO sightings, including detailed eye-witness descriptions, location, dates reported and sighted, duration and shape. The data comes from the National UFO Reporting Center. The sightings span from 1995 to 2009.
 
-UFO data across more than 60,000 accounts of UFO sightings, including detailed eye-witness descriptions, location, date reported and sighted, duration and shape. The data comes from the National UFO Reporting Center.
-
-  - 61,865 observations
-  - 
-
+61,865 observations, however, is a bit cumbersome, so I'm thinking that I'll only deal with those sightings from 1997. An arbitrary year.
 
 Installation
 --------------
@@ -14,13 +11,33 @@ Installation
 3. Run the following code in the directory in which the file was unzipped:
 
 ```sh
-ufo <- read.table("ufo_awesome.tsv", sep="\t", fill=TRUE)
+ufo <- read.table("C:/infochimps/ufo/ufo_awesome.tsv", sep="\t", fill=TRUE)
 names(ufo) <- c("sighted_at","reported_at", "location", "shape", "duration", "description")
 ufo2 <- cbind(ufo, substring(as.character(ufo$reported_at),1,4))
 colnames(ufo2)[7] <- "year"
 ufo97 <- subset(ufo2, year == 1997) # creates a subset of those UFO sightings reported in 1997
+states <- substr(as.character(ufo97$location), nchar(as.character(ufo97$location))-2+1, nchar(as.character(ufo97$location)))
+ufo97 <- cbind(ufo97, states)
 ```
+Statistics
+---------
+In 1997 there were.
+  - 719 sightings
+  - Most sightings occurred in the West
+    - California (83)
+    - Arizona (56)
+    - Washington (54)
+    - Missouri (44)
+    - Texas (39)
 
+And you can see this for yourself by running the following code in R:
+
+```sh
+install.packages("plyr")
+library(plyr)
+x <- count(ufo97$states)
+x[order(x$freq, decreasing=TRUE),]
+```
 Mentions of Dataset online
 --------------------------
 Here are a smattering of the mentions of the dataset online:

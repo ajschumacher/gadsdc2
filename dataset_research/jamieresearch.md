@@ -13,7 +13,7 @@ The data that I'll be using comes from a project from work that examines whether
 
 
 
--  Rows: 1757
+- Rows: 1757
 - Columns: 37
 
 - Missing values: None

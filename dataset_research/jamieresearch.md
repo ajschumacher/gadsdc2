@@ -13,7 +13,7 @@ The data that I'll be using comes from a project from work that examines whether
 
 
 
--  Rows: 1757
+- Rows: 1757
 - Columns: 37
 
 - Missing values: None
@@ -52,3 +52,17 @@ final_nimh<- read.csv(C:/Users/doylejm/final_nimh.csv)
 - Mean number of citations: 231
 
 - Human studies: 1043 (59%) 
+
+**Other information**
+- What is an "impact score": An impact score is intended to measure, "...the likelihood for the project to exert a sustained, powerful influence on the research field(s) involved." It's based on 5 
+individual criteria and on reviews from 3 reviewers. The individual institutes and centers (ICs) do not assign percentiles--instead, much of the peer review system is managed by a third party 
+within NIH called the Center for Scientific Review (CSR). The method they use to assign percentiles is not published, but generally they say, that.. "A percentile is the approximate percentage 
+of applications that received a better overall impact/priority score from the study section during the past year." 
+
+- More on percentiles: The percentiles are given within study sections. Study sections tend to specialize in certain scientific areas, so grant applications are not randomly assigned. 
+The issue here is, since humans are making the determination of what grants go where, it's not entirely clear whether they're actually doing a good job and whether they assign things consistently. 
+This is a huge problem since we rely on peer review to help select the most promising science. 
+
+-I'm actually working with NHLBI on a [publication] (http://circres.ahajournals.org/content/early/2014/01/09/CIRCRESAHA.114.302656) (which basically reproduces their study using our data), so I have their code. Thankfully they also use R.
+ 
+

@@ -1,6 +1,6 @@
 ####Dataset Research Assignment from Class 2 (23 July)
 
-I am using the 2013 DC Crime Dataset from the List of suggested datasets (DC Data Catalog: http://data.dc.gov/)
+I am using the 2013 DC Crime Dataset from the list of suggested datasets (DC Data Catalog: http://data.dc.gov/)
 
 #####(1) What are the structure and contents of your dataset? (Number of records, columns, missing values, etc.)
 

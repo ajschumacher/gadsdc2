@@ -1,8 +1,10 @@
 Infochimps UFO Dataset
 =========
-UFO data across more than 60,000 accounts of UFO sightings, including detailed eye-witness descriptions, location, dates reported and sighted, duration and shape. The data comes from the National UFO Reporting Center. The sightings span from 1995 to 2009.
+Infochimps.com is a clearinghouse for user-submitted data. They host and distribute any dataset under free/open terms. 
 
-61,865 observations, however, is a bit cumbersome, so I'm thinking that I'll only deal with those sightings from 1997. An arbitrary year.
+And among those datasets is one that contains more than 60,000 accounts of UFO sightings, including detailed eye-witness descriptions, location, dates reported and sighted, duration and shape. The data comes from the National UFO Reporting Center. The sightings span from 1995 to 2009.
+
+61,865 observations, however, is a bit cumbersome, so I'm thinking that I may only deal with those sightings from 1997. An arbitrary year.
 
 Installation
 --------------
@@ -13,9 +15,9 @@ Installation
 ```sh
 ufo <- read.table("C:/infochimps/ufo/ufo_awesome.tsv", sep="\t", fill=TRUE)
 names(ufo) <- c("sighted_at","reported_at", "location", "shape", "duration", "description")
-ufo2 <- cbind(ufo, substring(as.character(ufo$reported_at),1,4))
-colnames(ufo2)[7] <- "year"
-ufo97 <- subset(ufo2, year == 1997) # creates a subset of those UFO sightings reported in 1997
+ufo <- cbind(ufo, substring(as.character(ufo$reported_at),1,4))
+colnames(ufo)[7] <- "year"
+ufo97 <- subset(ufo, year == 1997) # creates a subset of those UFO sightings reported in 1997
 states <- substr(as.character(ufo97$location), nchar(as.character(ufo97$location))-2+1, nchar(as.character(ufo97$location)))
 ufo97 <- cbind(ufo97, states)
 ```

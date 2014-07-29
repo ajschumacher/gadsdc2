@@ -1,0 +1,1 @@
+I'm [on twitter](https://twitter.com/kmgpl) and I don't have a blog.  I don't really want to blog - yet.

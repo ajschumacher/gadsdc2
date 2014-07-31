@@ -1,1 +1,1 @@
-I'm [on twitter](https://twitter.com/kmgpl) and I don't have a blog.  I don't really want to blog - yet.
+I'm [on twitter](https://twitter.com/kmgpl) and a tentative start at a blog is https://kperezlopez.wordpress.com/.

@@ -1,0 +1,1 @@
+I'm [on twitter](https://twitter.com/kmgpl) and a tentative start at a blog is https://kperezlopez.wordpress.com/.

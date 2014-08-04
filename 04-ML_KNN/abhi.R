@@ -8,14 +8,17 @@ predict <- function(trainset, labels, testdata){
 
 oneNN <- function(dataframe){
 
-  train_index <- sample(.80 * nrow(dataframe))
+  index <- 1:nrow(dataframe)
 
-  train <- dataframe[train_index,]
-  test  <- dataframe[-train_index,]
+  trainindex <- sample(index, trunc(.80 * nrow(iris)))
 
-  apply(test, 1, function(testdata){
-   predict(train[1:4], train$Species, testdata[1:4])
-  })
+  trainset <- dataframe[trainindex, ]
+  testset <- dataframe[-trainindex, ]
+
+  for(i in 1:nrow(testset)) {
+    testdata <- testset[i,]
+    print(predict(trainset[1:4], trainset$Species, testdata[1:4]))
+  }
 }
 
 oneNN(iris)

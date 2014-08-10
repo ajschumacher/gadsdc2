@@ -1,7 +1,7 @@
 assign.score <- function(test.row, labels, training.data, K = 1) {
   training.data$score <- apply(training.data[,1:4], 1, function(x) { sqrt((x[1] - test.row[1])^2 + (x[2] - test.row[2])^2 + (x[3] - test.row[3])^2 + (x[4] - test.row[4])^2)})
   sorted <- training.data[with(training.data, order(score)), ]
-  return(sample(sorted[K, as.character(labels)], 1))
+  return(sample(sorted[1:K, as.character(labels)], 1))
   # This does not implement the voting functionality.
 }
 

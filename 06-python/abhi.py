@@ -1,5 +1,6 @@
 import csv
 
+
 def _read_csv(filename):
     with open(filename, 'rb') as csvfile:
         csvreader = csv.reader(csvfile)
@@ -47,8 +48,8 @@ def _write_csv(data):
         for row in data:
             w.writerow(row)
 
-if __name__ == '__main__':
 
+def main():
     dataset = _read_csv('health2.csv')
 
     print "Avg age is =>", _avg_age(dataset)
@@ -59,3 +60,6 @@ if __name__ == '__main__':
 
     _write_csv([{'sex': 'M', 'average_age': avg_male_age},
                 {'sex': 'F', 'average_age': avg_female_age}])
+
+if __name__ == '__main__':
+    main()

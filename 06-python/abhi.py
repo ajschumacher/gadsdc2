@@ -23,7 +23,7 @@ def _avg_age(health_dataset):
     return _avg(ages)
 
 
-def _sum_health_4_and_5(health_dataset):
+def _sum_health_2_and_5(health_dataset):
     return [int(row[5]) + int(row[8]) for row in health_dataset]
 
 
@@ -53,7 +53,7 @@ def main():
     health_dataset = _read_csv('health2.csv')
 
     print "Avg age is =>", _avg_age(health_dataset)
-    print "Sum of health2 and health5 =>", _sum_health_4_and_5(health_dataset)
+    print "Sum of health2 and health5 =>", _sum_health_2_and_5(health_dataset)
 
     avg_male_age, avg_female_age = _average_male_and_female_age(health_dataset)
     print "Avg male age =>%s and Avg female age =>%s" % (avg_male_age, avg_female_age)

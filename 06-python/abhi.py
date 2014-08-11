@@ -17,24 +17,24 @@ def _avg(rows):
     return round(sum(rows) / float(len(rows)), 2)
 
 
-def _avg_age(dataset):
-    ages = [int(row[2]) for row in dataset]
+def _avg_age(health_dataset):
+    ages = [int(row[2]) for row in health_dataset]
 
     return _avg(ages)
 
 
-def _sum_health_4_and_5(dataset):
-    return [int(row[5]) + int(row[8]) for row in dataset]
+def _sum_health_4_and_5(health_dataset):
+    return [int(row[5]) + int(row[8]) for row in health_dataset]
 
 
-def _filter_by(label, col_idx, dataset):
-    return filter(lambda x: x[col_idx] == label, dataset)
+def _filter_by(label, col_idx, health_dataset):
+    return filter(lambda x: x[col_idx] == label, health_dataset)
 
 
-def _average_male_and_female_ages(dataset):
+def _average_male_and_female_age(health_dataset):
 
-    male_ages = [int(row[2])for row in _filter_by('M', 1, dataset)]
-    female_ages = [int(row[2])for row in _filter_by('F', 1, dataset)]
+    male_ages = [int(row[2])for row in _filter_by('M', 1, health_dataset)]
+    female_ages = [int(row[2])for row in _filter_by('F', 1, health_dataset)]
 
     return _avg(male_ages), _avg(female_ages)
 
@@ -50,12 +50,12 @@ def _write_csv(data):
 
 
 def main():
-    dataset = _read_csv('health2.csv')
+    health_dataset = _read_csv('health2.csv')
 
-    print "Avg age is =>", _avg_age(dataset)
-    print "Sum of health2 and health5 =>", _sum_health_4_and_5(dataset)
+    print "Avg age is =>", _avg_age(health_dataset)
+    print "Sum of health2 and health5 =>", _sum_health_4_and_5(health_dataset)
 
-    avg_male_age, avg_female_age = _average_male_and_female_ages(dataset)
+    avg_male_age, avg_female_age = _average_male_and_female_age(health_dataset)
     print "Avg male age =>%s and Avg female age =>%s" % (avg_male_age, avg_female_age)
 
     _write_csv([{'sex': 'M', 'average_age': avg_male_age},

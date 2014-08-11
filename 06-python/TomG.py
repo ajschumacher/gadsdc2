@@ -1,4 +1,5 @@
 from __future__ import division
+
 import csv
 
 # Read health.csv into a list of lists

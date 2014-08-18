@@ -1,1 +1,1 @@
-# Baseball salary linear modeling
+# Exploring linear modeling

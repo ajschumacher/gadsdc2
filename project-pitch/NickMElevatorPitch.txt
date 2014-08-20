@@ -1,0 +1,5 @@
+At work I specialize in subnational trade data. For my final project, I'm thinking of improving an existing methodology that I use to derive idnustry export 
+estimates for each metro in the U.S. using a constraint satisfaction algorithm that will provide more accurate estimates. I will also develop some 
+visualizations to go along with the data to assist in exploratory analysis (i.e., time series graphics for industry and metro).
+An alternative idea, which I'm doing in my spare time for work, is a regression analysis of the determinants of foreign direct investment 
+in US metro areas.

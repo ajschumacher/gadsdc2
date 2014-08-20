@@ -1,0 +1,3 @@
+# Public Radio Podcast Recommender 
+
+Many people love specific podcasts from public radio such as This American Life or Planet Money. But it's not always easy to discover new shows. My goal will be to build a recommendation system to take podcasts individual NPR users have expressed an affinity for and suggest new ones to them. This will be accomplished using the rating schema and datebase from our NPR One app. The efficacy of this recommender will be gauged by showing suggested podcasts to users inside the app and seeing if the listen to them.

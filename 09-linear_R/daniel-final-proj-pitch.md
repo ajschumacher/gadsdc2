@@ -13,5 +13,18 @@ I plan on using the data provided by [yelp's dataset challege](http://www.yelp.c
 4. Predict users' rating using clusters
 5. Measure any performance improvement
 
+### Techniques
 
+##### Clustering (of business types)
+* Clustering
+* Trees
+* Recommender
+* SVM (could I use SVM for multiple categories?)
+* Ensemble
 
+##### Prediction (of ratings)
+* Linear regression
+* Ordered logit regressions
+* Naive bayes (?)
+
+* N-fold validation

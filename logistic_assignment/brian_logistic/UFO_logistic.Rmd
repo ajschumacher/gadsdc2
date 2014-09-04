@@ -1,0 +1,78 @@
+```{r}
+setwd('C:\\Users\\bfrickert\\Documents\\GitHub\\gadsdc2\\linear_assignment\\brian_linear')
+ufo_model <- read.csv('ufo_model.tsv', sep='\t')
+```
+
+I am creating (at Aaron's suggestion) two sets of samples.
+8000 that I've deemed as having had a sighting.
+2000 where I've randomly setting a value of FALSE for Had.Sighting at a randomly selected time.
+
+
+Now let's see if we can fit a logistic regression!
+
+Ultimately, I don't do much better than an AUC score of over .50!!!!
+(Although with one sample, I did see an AUC score of .68!!!)
+
+```{r}
+ufo_sighting <- ufo_model[sample(nrow(ufo_model),8000),]
+ufo_sighting$Had.Sighting <- 1
+ufo_nosighting <- ufo_model[sample(nrow(ufo_model),2000),]
+ufo_nosighting$Had.Sighting <- 0
+ufo_nosighting$Hour <- ufo_model[sample(nrow(ufo_model),2000),]$Hour
+ufo_samples <- rbind(ufo_sighting, ufo_nosighting)
+```
+
+What is the distribution of distances from a UFO sighting (from a sample of 100) from the nearest 
+Military Installation based on whether the UFO is round. Doesn't seem to be much difference.
+```{r}
+boxplot(MilitaryDist ~ is.Round, data=ufo_samples[sample(nrow(ufo_samples),100),], xlab="Distance From Military Insallation", ylab="Shape", horizontal=TRUE)
+```
+What is the distribution of distances from a UFO sighting (from a sample of 100) from the 
+nearest airport based on whether the UFO is round.
+```{r}
+boxplot(AirportDist ~ is.Round, data=ufo_samples[sample(nrow(ufo_samples),100),], xlab="Airport Distance", ylab="Is Round?", horizontal=TRUE)
+```
+What is the distribution of distances from a UFO sighting (from a sample of 100) from the 
+nearest meteorological station based on whether the UFO is round.
+```{r}
+boxplot(MeterologicalDist ~ is.Round, data=ufo_samples[sample(nrow(ufo_samples),100),], xlab="Meteorological Station Distance", ylab="Is Round?", horizontal=TRUE)
+```
+# Percentages of Roundess of UFO by state of UFO sighting's location.
+```{r}
+barplot(prop.table(table(ufo_samples$is.Round, ufo_samples$State), 2), xlab="State", ylab="Is Round")
+```
+
+```{r}
+ufo_samples$Shape <- as.factor(ufo_samples$Shape)
+
+model <- glm(Had.Sighting ~ State * Hour # (StorDist * GolfDist * MeterologicalDist) #+ SwampDist + LibDist + MallDist + HospitalDist + StorDist + GolfDist
+             , data=ufo_samples, family="binomial")
+summary(model)
+```
+Seeing the following Warning(!!):
+Warning message:
+ In predict.lm(object, newdata, se.fit, scale = 1, type = ifelse(type ==  :
+   prediction from a rank-deficient fit may be misleading
+```{r}
+logodds <- predict(model, ufo_samples)
+probs <- predict(model, ufo_samples, type="response")
+head(logodds)
+head(probs)
+head(log(probs/(1-probs)))
+head(exp(logodds)/(1+exp(logodds)))
+
+head(data.frame(actual=ufo_samples$Had.Sighting, prediction=probs))
+
+suppressPackageStartupMessages(library('ROCR'))
+pred <- prediction(predictions=probs, labels=ufo_samples$Had.Sighting)
+acc <- performance(pred, measure='acc')
+plot(acc)
+prec <- performance(pred, measure='prec')
+plot(prec)
+rec <- performance(pred, measure='rec')
+plot(rec)
+roc <- performance(pred, 'tpr', 'fpr')
+plot(roc)
+auc <- performance(pred, measure='auc')
+auc@y.values[[1]]
+```

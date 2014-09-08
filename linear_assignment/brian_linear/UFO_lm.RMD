@@ -1,91 +1,49 @@
-This is the data set!
-
-NOTE: I am still tweaking my model. My data is bedeviled with collinearity.
-
-```{r}
 setwd('C:\\Users\\bfrickert\\Documents\\GitHub\\gadsdc2\\linear_assignment\\brian_linear')
 ufo_model <- read.csv('ufo_model.tsv', sep='\t')
-```
 
-Check out how linear the relationship is between the distance between Libraries
-and Malls from UFO Sightings!! Doesn't seem to matter whether the shape of the 
-UFO is round or not!
+ufo_lm <- subset(ufo_model, MilitaryDist < 100)
 
-```{r}
-plot(LibDist ~ MallDist, data=subset(ufo_model, is.Round==1), col='black')
-points(LibDist ~ MallDist, data=subset(ufo_model, is.Round==0), col='red')
-```
-
-What's this? The relationship between the distance from Military Installations and
-Self-Storage facilities is also strongly linear!!
-```{r}
-library(ggplot2)
-ggplot(ufo_model, aes(y=MilitaryDist, x=StorDist, label=State)) + geom_text()
-```
-
-A linear model!! By playing around I arrived at the linear model below.
-```{r}
 linear.fit <- lm(MilitaryDist ~ SwampDist #+ GolfDist + HospitalDist 
                  + MeterologicalDist #+ StorDist
-                 , data=ufo_model)
+                 , data=ufo_lm)
 rmse <- function(x, y) {
   return(sqrt(mean((x-y)^2)))
 }
-rmse(ufo_model$MilitaryDist, predict(linear.fit))
+rmse(ufo_lm$MilitaryDist, predict(linear.fit))
 summary(linear.fit) # .99 Adjusted R-squared score!!
-```
 
-5 plots! And they're all linear!!
-```{r}
 plot(MilitaryDist ~ SwampDist #+ GolfDist + HospitalDist 
      + MeterologicalDist #+ StorDist
-     , data=ufo_model)
+     , data=ufo_lm)
 abline(linear.fit, col="red") # This red line is kind of confusing! Why is it declining?
-```
 
-The residuals!
-```{r}
-plot(MilitaryDist - predict(linear.fit) ~ MilitaryDist, data=ufo_model)
+plot(MilitaryDist - predict(linear.fit) ~ MilitaryDist, data=ufo_lm)
 
 plot(linear.fit, 1) # the first available diagnostic plot
-```
 
-Strong correllations, EXCEPT when it comes to the distance of the UFO Sighting from an airport!!
-
-The danger here is multicollinearity!
-```{r}
-plot(ufo_model[,c(10:18)], pch=19, col=ufo_model$State)
-round(cor(ufo_model[,c(10:18)])^2, 2)
+plot(ufo_lm[,c(10:18)], pch=19, col=ufo_model$MilitaryDist)
+round(cor(ufo_lm[,c(10:18)])^2, 2)
 
 head(model.matrix(MilitaryDist ~ SwampDist #+ GolfDist + HospitalDist 
                   + MeterologicalDist #+ StorDist
-                  , data=ufo_model))
-
-```
+                  , data=ufo_lm))
 
 The log-fit doesn't do anything for me. R-squared score of .37!
-```{r}
-ggplot(ufo_model, aes(y=log(MilitaryDist), x=log(SwampDist #+ GolfDist + HospitalDist 
+ggplot(ufo_lm, aes(y=log(MilitaryDist), x=log(SwampDist #+ GolfDist + HospitalDist 
                                                  + MeterologicalDist #+ StorDist
                                                  ))) + geom_point()
 log.fit <- lm(log(MilitaryDist) ~ log(SwampDist #+ GolfDist + HospitalDist 
                                       + MeterologicalDist #+ StorDist
-                                      ), data=ufo_model)
+                                      ), data=ufo_lm)
 summary(log.fit)
-```
 
-Here I begin having fun with regularization.
-```{r}
 library(glmnet)
-ufo_model2<-ufo_model[complete.cases(ufo_model),]
+ufo_model2<-ufo_lm[complete.cases(ufo_lm),]
 x=model.matrix(MilitaryDist ~ SwampDist #+ GolfDist + HospitalDist 
                + MeterologicalDist #+ StorDist
-               , data=ufo_model2) 
+               , data=ufo_lm) 
 y=ufo_model2$MilitaryDist
-```
 
-Ridge regression!
-```{r}
 fit.ridge=glmnet(x, y, alpha=0)
 plot(fit.ridge, xvar="lambda", label=TRUE)
 
@@ -101,4 +59,10 @@ set.seed(42)
 cv.lasso=cv.glmnet(x, y, nfolds=10)
 plot(cv.lasso)
 coef(cv.lasso)
-```
+
+
+
+cv.lasso$lambda.min
+#predict(cv.fit,newx=x[1:5,],s=c(0.001,0.002)
+head(predict(cv.lasso,x ,s=cv.lasso$lambda.1se))
+rmse(ufo_model$MilitaryDist, predict(cv.lasso,x ,s=cv.lasso$lambda.1se))

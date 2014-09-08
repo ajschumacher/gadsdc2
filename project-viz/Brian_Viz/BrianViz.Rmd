@@ -1,0 +1,60 @@
+Brian's Visualization Homework
+=========
+Here are my visualizations. It's an ongoing process. These may or may not appear in a final product.
+
+First Viz
+--------------
+
+My first viz (I call a visualization a 'viz') is a Tuftean dream. It's a boxplot behind a barchart with a line graph growth rate hovering above it. This graph not only displays volumes of UFO sightings by day; but gives the viewer a sense of the IQR, median and outliers; and a growth rate that demonstrates the delta in UFO Reporting Center Calls by day.
+
+Code for Brian01.jpeg
+
+```r
+library(plyr)
+x <- count(as.Date(ufo$SightingDate, format='%m/%d/%Y %H:%M')) # count by Date
+x <- data.frame(x)
+colnames(x) <- c('SightingDate', 'freq')
+x$Category <- 1
+
+x <- ddply(x, "Category", transform,
+      Growth=c(NA, exp(diff(log(freq)))-1))
+x <- data.frame(x)
+
+ggplot(x, aes(x=SightingDate, y=freq, ylab="No. of Sightings")) + 
+  geom_line(data = x, aes(x=SightingDate, y=((Growth * 10) + 300), colour="black"), show_guide=FALSE) +
+  geom_boxplot(aes(colour="black"), show_guide=FALSE) +
+  geom_bar(stat="identity", aes(colour="green"), show_guide=FALSE) +
+  ylab("Number of Sightings") + 
+  xlab("Sighting Dates") + 
+  ggtitle("Number of Sightings From Jan, 2013 to August 2014 \n(w/ superimposed growth rate)") + 
+  theme_bw() +
+  theme(axis.text = element_text(colour = "red", size=rel(1.1))) +
+  theme(axis.title.x = element_text(size = rel(.9), angle = 0)) +
+  theme(axis.title.y = element_text(size = rel(.9), angle = 90)) +
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+```
+
+Second Viz
+---------------
+This one's the showstopper. It's created in Tableau though. And from Tableau Online, you can't play it as an animation with dots sprouting all over the United States as each day passes. So if I use this one in my final presentation, I'll have to play it from the Tableau Public client from my machine.
+
+
+Third Viz
+---------------
+Messed around with lattice and xyplot, but found that I could do everything I wanted in ggplot. Not to say that this viz represents everything I wanted. Right now, it stinks. I'm trying to find a way to suggest that Round UFO's gravitate toward Weather Stations and Swamps. The resolution on these graphs is too small to tell us that, or anything for that matter. So I will need to further aggregate the data to make it even kind of legible. But this is my progress thus far.
+
+```r
+ggplot(ufo_lm, aes(x = Day, y = jitter(MilMet.diff), group = Month)) + 
+  ggtitle("Difference in Distance from Military Installation vs. Distance from Meteorological Station (by Month)") + 
+  geom_line() +
+  geom_line(mapping = aes(y = jitter(MilMet.diff)), lty = "dashed", colour="red") +
+  #geom_line(mapping = aes(y = MilSw.diff), lty = "dashed") +
+  #geom_line(mapping = aes(y = MilMet.diff), lty="dashed" lwd = 0.3, colour = "red") +
+  facet_wrap( ~ Month) +
+  theme_bw() +
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+boxplot(MilMet.diff ~ is.Round, data=subset(ufo_lm, MilMet.diff<0))
+
+```

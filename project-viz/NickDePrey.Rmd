@@ -1,0 +1,94 @@
+---
+title: "SimpleProjectViz"
+output: html_document
+---
+Visualizations of NPR One Ratings Data
+
+Data is in raw ratings format where each observation is a "rating" that a user has assigned to an individual story
+relevant ratings can be one of the following: COMPLETE, THUMBUP, SHARE, SKIP, START
+
+```{r}
+df <- read.csv(file="ratings_story2014-09-10.csv")
+df$ratings_origin <- as.character(df$ratings_origin)
+```
+
+The only origins (manual aggregations of stories) we care about are: INVEST, BREAK, OPENDOOR, SELECTS.  The only ratings we care about are SKIP, START, COMPLETED, SHARE, THUMBUP, PASS,
+
+```{r}
+origins <- c("INVEST","BREAK","OPENDOOR","SELECTS","ARCHIVES")
+r <- df[df$ratings_origin %in% origins,]
+relevant.ratings <- c("COMPLETED","THUMBUP","SHARE","SKIP","START","PASS")
+r <- r[r$ratings_rating %in% relevant.ratings,]
+```
+
+Next we reshape the data into an aggregation by unique stories, adding the story ID as a rowname and some other munging.
+
+```{r}
+library(reshape2)
+stories <- dcast(r, ratings_story_id + thing_title + thing_teaser + ratings_origin ~ ratings_rating, fun.aggregate=length)
+rownames(stories) <- stories$ratings_story_id
+stories <- stories[,2:ncol(stories)]
+```
+
+
+Now add some calculations into our stories dataframe for completion and incompletion percentage.  The ratings that indicate a positive response or what I'm calling a "completion" are COMPLETED, SHARE, and THUMBUP.  Incomplete Ratings are SKIP and START.
+
+```{r} 
+stories$TOTAL <- rowSums(stories[,-c(1,2,3,4)])
+stories$incomplete_rate <- (stories$SKIP + stories$START + stories$PASS) / stories$TOTAL
+stories$complete_rate <- (stories$COMPLETED + stories$THUMBUP + stories$SHARE) / stories$TOTAL
+```
+
+If the above returns the same values, we're ready to work with our data.  First let's plot the number of ratings for each story. This will give us a sense of the distribution of ratings for each story.
+
+```{r}
+boxplot(stories$TOTAL, cex=0.4)
+```
+
+Oh! We have lots of stories without a lot of ratings! Now lets separate the stories into the 5 origins we are interested in
+
+```{r}
+library(ggplot2)
+p <- ggplot(stories, aes(ratings_origin, TOTAL))
+p + geom_boxplot()
+```
+
+So we know that we have some stories that have too few ratings to get reliable data from. We also know we have quite a few stories with tons of data. Lets try removing the stories that have less than 25 ratings and then looking at the distribution again.
+
+```{r}
+stories.25 <- stories[stories$TOTAL >= 25,]
+p2 <- ggplot(stories.25, aes(ratings_origin, TOTAL))
+p2 + geom_boxplot()
+```
+
+Lets quickly compare the number of unique stories in each category
+
+```{r}
+p3 <- ggplot(stories.25, aes(ratings_origin))
+p3 + geom_bar(stat="bin")
+```
+
+Thats a cleaner view of the distribution.  So we know that stories in BREAK, INVEST, and OPENDOOR have a median of about 1,000 ratings per story and SELECTS. 
+
+So now lets compare the rates of assigning positive and negative ratings to each story and see how they perform compared to each other:
+
+```{r}
+p4 <- ggplot(stories.25, aes(ratings_origin,complete_rate))
+p4 + geom_boxplot()
+
+p5 <- ggplot(stories.25, aes(ratings_origin,incomplete_rate))
+p5 + geom_boxplot()
+```
+
+One of the primary similary attribues I want to use for selecting k-nearest ratings by this user of similar stories is # of instances of similar words in the title and teaser. Let's make sure all stories have something substantial in those fields before moving to Python to do the CountVectorizing.
+
+```{r}
+
+stories.25$title_chars <- nchar(iconv(as.character(stories.25$thing_title, "latin1","UTF-8")))
+stories.25$teaser_chars <- nchar(iconv(as.character(stories.25$thing_teaser,"latin1","UTF-8")))
+
+boxplot(stories.25$title_chars, cex=0.4)
+boxplot(stories.25$teaser_chars, cex=0.4)
+```
+
+We can conclude that the number of characters in both of the titles and teasers is sufficient to derive good count vectorizer analysis. Next time, after count vectorizing, I will get a sense for the number of similar number of stories which contain similar words, for any given story before deciding how to proceed with a deriving a distance function for k-nearest neighbor analysis.
